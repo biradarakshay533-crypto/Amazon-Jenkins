@@ -1,42 +1,43 @@
 pipeline {
     agent any
-    environment {
-        // Use PATH+EXTRA to append to PATH properly
-        PATH = "/usr/bin:/bin:/opt/homebrew/bin"
+
+    tools {
+        maven 'maven3'
+        jdk 'jdk21'
     }
+
     stages {
-
-        stage('pull scm git ') {
+        stage('clean stage') {
             steps {
-                git branch: 'main', url: 'https://github.com/PraveenKuber/Amazon-Jenkins.git'
-            }
-        }
-        stage('compile ') {
-            steps {
-                sh 'mvn compile'
+                sh 'mvn -B clean'
             }
         }
 
-        stage('build') {
+        stage('compile stage') {
             steps {
-                 sh 'mvn clean install'
+                sh 'mvn -B compile'
             }
         }
 
-        
+        stage('test stage') {
+            steps {
+                sh 'mvn -B test'
+            }
+        }
+
+        stage('build and install stage') {
+            steps {
+                sh 'mvn -B clean install'
+            }
+        }
     }
 
-  post{
-
-  success{
-     echo 'Build success 1'
-  }
-    
-  failure{
-       echo 'Failure in the build'
-   }
-
-  }
-
-
+    post {
+        success {
+            echo 'Jenkinsfile pipeline finished successfully.'
+        }
+        failure {
+            echo 'Jenkinsfile pipeline failed.'
+        }
+    }
 }
