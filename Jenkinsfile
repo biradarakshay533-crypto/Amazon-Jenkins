@@ -34,7 +34,7 @@ pipeline {
 
     post {
         success {
-            echo 'Jenkinsfile pipeline finished successfully.'
+            echo 'dev2 branch pipeline finished successfully.'
         }
         failure {
             echo 'Jenkinsfile pipeline failed.'
